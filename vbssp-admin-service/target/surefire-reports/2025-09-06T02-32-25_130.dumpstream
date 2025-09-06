@@ -1,0 +1,5 @@
+# Created at 2025-09-06T02:32:27.894
+Boot Manifest-JAR contains absolute paths in classpath 'D:\Sprint\vbssp-admin-service\target\test-classes'
+Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
+'other' has different root
+
