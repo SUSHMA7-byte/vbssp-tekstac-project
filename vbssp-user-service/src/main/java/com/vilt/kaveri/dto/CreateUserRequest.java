@@ -21,6 +21,5 @@ public class CreateUserRequest {
 
     @Size(min=10, message = "Phone number should have minimum 10 characters")
     private String phoneNum;
-    private Set<String> roles;
 }
 

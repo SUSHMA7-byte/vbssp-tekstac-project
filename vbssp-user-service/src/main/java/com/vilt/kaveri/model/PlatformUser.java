@@ -20,7 +20,7 @@ public class PlatformUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @Column(name="full_name", length=50, unique = true, nullable = false)
+    @Column(length=50, unique = true, nullable = false)
     private String userName;
 
     @Column(length=25, unique = true, nullable = false)

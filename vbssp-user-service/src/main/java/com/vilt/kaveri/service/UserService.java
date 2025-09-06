@@ -30,7 +30,6 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // --- Create User ---
     public PlatformUser createUser(CreateUserRequest request) {
         PlatformUser user = new PlatformUser();
         user.setUserName(request.getUserName());
@@ -39,7 +38,6 @@ public class UserService {
         user.setPhoneNum(request.getPhoneNum());
         user.setStatus(PlatformUser.Status.ACTIVE);
 
-        // Assign default role
         Role defaultRole = roleRepository.findByRoleName("ROLE_USER")
                 .orElseThrow(() -> new ResourceNotFoundException("Default role not found: ROLE_USER"));
         Set<Role> roles = new HashSet<>();
@@ -49,13 +47,11 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    // --- Get single user ---
     public PlatformUser getUser(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
     }
 
-    // --- Get all users ---
     public List<UserResponse> getAllUsers() {
         return userRepository.findAll().stream()
                 .map(this::toUserResponse)
@@ -67,7 +63,6 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
     }
 
-    // --- Update user ---
     public PlatformUser updateUser(Long userId, UpdateUserRequest request) {
         PlatformUser user = getUser(userId);
 
@@ -85,12 +80,10 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    // --- Delete user ---
     public void deleteUser(Long userId) {
         userRepository.deleteById(userId);
     }
 
-    // --- Mapper: PlatformUser → UserResponse ---
     public UserResponse toUserResponse(PlatformUser user) {
         return new UserResponse(
                 user.getUserId(),

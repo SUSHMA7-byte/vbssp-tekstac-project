@@ -5,10 +5,9 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "user-management-service")
+@FeignClient(name = "user-management-service", url = "http://localhost:8081")
 public interface UserServiceClient {
 
     @GetMapping("/api/users/email/{email}")
-    UserAuthResponse getUserByEmail(@PathVariable String email);
-
+    UserAuthResponse getUserByEmail(@PathVariable("email") String email);
 }
