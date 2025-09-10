@@ -3,6 +3,8 @@ package com.vilt.kaveri.controller;
 import com.vilt.kaveri.config.JwtUtil;
 import com.vilt.kaveri.dto.AuthRequest;
 import com.vilt.kaveri.dto.UserAuthResponse;
+import com.vilt.kaveri.exception.InvalidCredentialsException;
+import com.vilt.kaveri.exception.UserNotFoundException;
 import com.vilt.kaveri.feign.UserServiceClient;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -28,21 +30,21 @@ public class AuthController {
 
     @PostMapping("/login")
     public Map<String, Object> login(@RequestBody AuthRequest request) {
-        UserAuthResponse user;
-        try {
-            user = userServiceClient.getUserByEmail(request.getEmail());
-            if (user == null) return Map.of("message", "User not found");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Map.of("message", "User service unavailable");
+
+        UserAuthResponse user = userServiceClient.getUserByEmail(request.getEmail());
+        if (user == null) {
+            throw new UserNotFoundException("User not found with email: " + request.getEmail());
         }
 
+
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword_hash())) {
-            return Map.of("message", "Incorrect password");
+            throw new InvalidCredentialsException("Invalid email or password");
         }
+
 
         Set<String> roles = user.getRoles();
         String token = jwtUtil.generateToken(user.getEmail(), roles);
+
 
         return Map.of(
                 "token", token,

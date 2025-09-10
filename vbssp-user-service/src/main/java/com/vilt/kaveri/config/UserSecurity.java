@@ -1,5 +1,7 @@
 package com.vilt.kaveri.config;
 
+import com.vilt.kaveri.exception.UnauthorizedActionException;
+import com.vilt.kaveri.model.PlatformUser;
 import com.vilt.kaveri.service.UserService;
 import org.springframework.stereotype.Component;
 
@@ -12,12 +14,13 @@ public class UserSecurity {
         this.userService = userService;
     }
 
-    /**
-     * Check if the given id belongs to the authenticated user (by email).
-     */
     public boolean isSelf(Long userId, String authEmail) {
-        String userEmail = userService.getUser(userId).getEmail();
-        return userEmail.equalsIgnoreCase(authEmail);
+        PlatformUser user = userService.getUser(userId);
+        if (!user.getEmail().equalsIgnoreCase(authEmail)) {
+            throw new UnauthorizedActionException("You are not authorized to access this profile");
+        }
+        return true;
     }
+
 }
 

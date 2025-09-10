@@ -33,3 +33,7 @@ desc users;
 --     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
 --     FOREIGN KEY (role_id) REFERENCES roles(role_id) ON DELETE CASCADE
 -- );
+SELECT user_id, email FROM users WHERE user_id = 2;
+
+INSERT INTO user_roles (user_id, role_id)
+SELECT 1, role_id FROM roles WHERE role_name='ROLE_ADMIN';
